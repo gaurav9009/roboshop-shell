@@ -5,6 +5,7 @@ ZONE_ID="Z0029506XFW9QW7MD6AY"
 DOMAIN="gauravverma.co.uk"
 SG_NAME="allow-all"
 env=dev
+LOG=/tmp/roboshop.log
 #############################
 
 
@@ -44,6 +45,6 @@ fi
 
 for component in catalogue cart user shipping payment frontend mongodb mysql rabbitmq redis dispatch; do
   COMPONENT="${component}-${env}"
-  create_ec2 &>>/tmp/roboshop.log
+  create_ec2 &>>&>>${LOG}
   echo "Server created for ${component}-${env}"
 done
