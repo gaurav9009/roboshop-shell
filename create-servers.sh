@@ -7,10 +7,8 @@ ZONE_ID="Z0029506XFW9QW7MD6AY"
 DOMAIN="gauravverma.co.uk"
 SG_NAME="allow-all"
 env=dev
-LOG=/roboshop-shell/tmp/roboshop.log
+LOG=/tmp/roboshop.log
 #############################
-
-
 
 create_ec2() {
   PRIVATE_IP=$(aws ec2 run-instances \
@@ -21,8 +19,7 @@ create_ec2() {
       --security-group-ids ${SGID} \
       | jq '.Instances[].PrivateIpAddress' | sed -e 's/"//g')
 
-#  sed -e "s/IPADDRESS/${PRIVATE_IP}/" -e "s/COMPONENT/${COMPONENT}/" -e "s/DOMAIN/${DOMAIN}/" route53.json >/tmp/record.json
-  sed -e "s/IPADDRESS/${PRIVATE_IP}/" -e "s/COMPONENT/${COMPONENT}/" -e "s/DOMAIN/${DOMAIN}/" route53.json &>>${LOG}
+  sed -e "s/IPADDRESS/${PRIVATE_IP}/" -e "s/COMPONENT/${COMPONENT}/" -e "s/DOMAIN/${DOMAIN}/" route53.json >/tmp/record.json
   aws route53 change-resource-record-sets --hosted-zone-id ${ZONE_ID} --change-batch file:///tmp/record.json 2>/dev/null
   if [ $? -eq 0 ]; then
     echo "Server Created - SUCCESS - DNS RECORD - ${COMPONENT}.${DOMAIN}"
@@ -48,6 +45,7 @@ fi
 
 for component in catalogue cart user shipping payment frontend mongodb mysql rabbitmq redis dispatch; do
   COMPONENT="${component}-${env}"
+  echo "Call function to create Server for ${component}-${env}"
   create_ec2
   echo "Server created for ${component}-${env}"
 done
