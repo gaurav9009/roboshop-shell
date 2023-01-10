@@ -1,11 +1,8 @@
 #!/bin/bash
 
 ##### Change these values #####
-aws configure
-
-
-
-
+#aws configure
+#############################
 ZONE_ID="Z0029506XFW9QW7MD6AY"
 DOMAIN="gauravverma.co.uk"
 SG_NAME="allow-all"
