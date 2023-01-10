@@ -44,6 +44,6 @@ fi
 
 for component in catalogue cart user shipping payment frontend mongodb mysql rabbitmq redis dispatch; do
   COMPONENT="${component}-${env}"
-  create_ec2
+  create_ec2 &>>/tmp/roboshop.log
   echo "Server created for ${component}-${env}"
 done
