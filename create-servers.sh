@@ -1,6 +1,11 @@
 #!/bin/bash
 
-##### Change these values ###
+##### Change these values #####
+aws configure
+
+
+
+
 ZONE_ID="Z0029506XFW9QW7MD6AY"
 DOMAIN="gauravverma.co.uk"
 SG_NAME="allow-all"
@@ -45,6 +50,6 @@ fi
 
 for component in catalogue cart user shipping payment frontend mongodb mysql rabbitmq redis dispatch; do
   COMPONENT="${component}-${env}"
-  create_ec2 &>>&>>${LOG}
+  create_ec2 &>>${LOG}
   echo "Server created for ${component}-${env}"
 done
